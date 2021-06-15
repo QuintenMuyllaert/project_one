@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <title>Sunshine - Quinten Muyllaert</title>
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/socket.io.js"></script>
+    <script src="/js/core.js"></script>
+    <script src="/js/charts.js"></script>
+    <script src="/js/animated.js"></script>
+    <script src="/js/p5.min.js"></script>
+    <script src="/js/helper.js"></script>
+    <script src="/js/index.js"></script>
+</head>
+
+<body scroll="no" class="colors blue">
+    <nav id="navigation" class="hidden">
+        <div id="hamburger">
+            <svg id="hamburger-icon" class="dye main" xmlns="http://www.w3.org/2000/svg" height="24px"
+                viewBox="0 0 24 24" width="24px" fill="#000000">
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg>
+        </div>
+
+        <h1>Sunshine</h1>
+        <svg class="dye main" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+            fill="#000000">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+                d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z" />
+        </svg>
+
+    </nav>
+    <div id="hamburger-menu">
+        <h2>Settings</h2>
+        <ul id="hamburger-list">
+            <li>Main</li>
+            <li>Statistics</li>
+        </ul>
+    </div>
+    <main>
+        <article id="statistics" class="hidden">
+            <h2>Statistics</h2>
+            <h3>Temperature</h3>
+            <div id="chartdiv" class="chart"></div>
+            <h3>Humidity</h3>
+            <div id="chartdiv2" class="chart"></div>
+        </article>
+        <article id="main" class="hidden">
+            <div class="flex spaced">
+                <div>
+                    <h2>Home</h2>
+                    <label for="effects">Choose an effect :<br></label>
+                    <select name="effects" id="effects">
+                        <option value="off">Off</option>
+                        <option value="solid">Solid</option>
+                        <option value="orbit">Orbit</option>
+                        <option value="sundown">Sundown</option>
+                        <option value="rain">Rain</option>
+                        <option value="steam">Steam</option>
+                        <option value="sound">Sound</option>
+                        <option value="rainbow sound">Rainbow Sound</option>
+                        <option value="fade">Fade</option>
+                        <option value="automatic">Automatic</option>
+                    </select>
+                </div>
+
+                <div class="weather-container">
+                    <p>Temperature</p>
+                    <div class="flex weather">
+                        <svg class="dye main" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                            height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                            <g>
+                                <path d="M0,0h24v24H0V0z" fill="none" />
+                            </g>
+                            <g>
+                                <path
+                                    d="M15,13V5c0-1.66-1.34-3-3-3S9,3.34,9,5v8c-1.21,0.91-2,2.37-2,4c0,2.76,2.24,5,5,5s5-2.24,5-5C17,15.37,16.21,13.91,15,13z M11,11V5c0-0.55,0.45-1,1-1s1,0.45,1,1v1h-1v1h1v1v1h-1v1h1v1H11z" />
+                            </g>
+                        </svg>
+                        <p id="temperature" class=" dye white weather-sensordata">N/A°C</p>
+                    </div>
+
+                    <p>Humidity</p>
+                    <div class="flex weather">
+                        <svg class="dye main" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24"
+                            height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                            <rect fill="none" height="24" width="24" />
+                            <path
+                                d="M12,2c-5.33,4.55-8,8.48-8,11.8c0,4.98,3.8,8.2,8,8.2s8-3.22,8-8.2C20,10.48,17.33,6.55,12,2z M7.83,14 c0.37,0,0.67,0.26,0.74,0.62c0.41,2.22,2.28,2.98,3.64,2.87c0.43-0.02,0.79,0.32,0.79,0.75c0,0.4-0.32,0.73-0.72,0.75 c-2.13,0.13-4.62-1.09-5.19-4.12C7.01,14.42,7.37,14,7.83,14z" />
+                        </svg>
+                        <p id="humidity" class="dye white weather-sensordata">N/A%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="thinline"></div>
+            <div id="effect-solid" class="hidden">
+                <div id="p5-container"></div>
+                <input type="range" min="25" max="127" value="50" class="slider" id="slider">
+                <div class="brightness-container">
+                    <svg class="dye main" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                        width="24px" fill="#000000">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M20 15.31L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" />
+                    </svg>
+                    <p>Brightness</p>
+                    <svg class="dye main" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24"
+                        width="24px" fill="#000000">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z" />
+                    </svg>
+
+                </div>
+            </div>
+            <div id="effect-clock" class="hidden">
+                <label for="appt">Choose a time</label>
+                <input type="time" id="appt" name="appt" min="09:00" max="18:00" required>
+
+            </div>
+
+        </article>
+    </main>
+    <main id="loadingscreen">
+        <svg class="dye white" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px"
+            fill="#000000">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+                d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z" />
+        </svg>
+        <h1 class="dye white">Sunshine</h1>
+        <h2 class="dye white">Loading</h2>
+        <div class="flex">
+            <p class="woosh">O</p>
+            <p class="woosh">O</p>
+            <p class="woosh">O</p>
+            <p class="woosh">O</p>
+            <p class="woosh">O</p>
+        </div>
+    </main>
+
+</body>
+
+</html>
